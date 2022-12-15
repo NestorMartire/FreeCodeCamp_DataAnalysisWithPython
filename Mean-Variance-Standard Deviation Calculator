@@ -1,7 +1,4 @@
-import numpy as np
-import json
-
-def mean(list):
+def calculate(list):
     count=0
     for i in list:
         count = count + 1
@@ -25,7 +22,7 @@ def mean(list):
         sumcol = np.sum(array, axis=0).tolist()
         sumrow = np.sum(array, axis=1).tolist()
         sumtot = np.sum(array).tolist()
-        dictionary = {
+        return {
             'mean' : [meancol, meanrow, meantot ], 
             'variance' : [varcol, varrow, vartot],
             'standard deviation' : [stdcol, stdrow, stdtot],
@@ -33,9 +30,5 @@ def mean(list):
             'min' : [mincol, minrow, mintot],
             'sum' : [sumcol, sumrow, sumtot]
         }
-        result = '\n'.join(f'{key}:{value}' for key, value in dictionary.items())
-        print(result)
     else:
-        return('List must contain nine numbers.')
-list = [0,1,2,3,4,5,6,7,8]
-mean(list)
+        raise ValueError('List must contain nine numbers.')
