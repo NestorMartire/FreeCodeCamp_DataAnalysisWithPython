@@ -1,0 +1,41 @@
+import numpy as np
+import json
+
+def mean(list):
+    count=0
+    for i in list:
+        count = count + 1
+    if count == 9:
+        array = np.array(list).reshape(3, 3)  
+        meancol = np.mean(array, axis=0).tolist()
+        meanrow = np.mean(array, axis=1).tolist()
+        meantot = np.mean(array).tolist()
+        varcol = np.var(array, axis=0).tolist()
+        varrow = np.var(array, axis=1).tolist()
+        vartot = np.var(array).tolist()
+        stdcol = np.std(array, axis=0).tolist()
+        stdrow = np.std(array, axis=1).tolist()
+        stdtot = np.std(array).tolist()
+        maxcol = np.max(array, axis=0).tolist()
+        maxrow = np.max(array, axis=1).tolist()
+        maxtot = np.max(array).tolist()
+        mincol = np.min(array, axis=0).tolist()
+        minrow = np.min(array, axis=1).tolist()
+        mintot = np.min(array).tolist()
+        sumcol = np.sum(array, axis=0).tolist()
+        sumrow = np.sum(array, axis=1).tolist()
+        sumtot = np.sum(array).tolist()
+        dictionary = {
+            'mean' : [meancol, meanrow, meantot ], 
+            'variance' : [varcol, varrow, vartot],
+            'standard deviation' : [stdcol, stdrow, stdtot],
+            'max' : [maxcol, maxrow, maxtot],
+            'min' : [mincol, minrow, mintot],
+            'sum' : [sumcol, sumrow, sumtot]
+        }
+        result = '\n'.join(f'{key}:{value}' for key, value in dictionary.items())
+        print(result)
+    else:
+        return('List must contain nine numbers.')
+list = [0,1,2,3,4,5,6,7,8]
+mean(list)
