@@ -1,0 +1,68 @@
+import pandas as pd
+
+
+def calculate_demographic_data(print_data=True):
+    # Read data from file
+  df = pd.read_csv('adult.data.csv')
+
+    # How many of each race are represented in this dataset? This should be a Pandas series with race names as the index labels.
+  mask = df['race'] == 'Black'
+  black = df[mask]['race'].count() 
+  mask = df['race'] == 'White'
+  white = df[mask]['race'].count() 
+  mask = df['race'] == 'Other'
+  other = df[mask]['race'].count() 
+  mask = df['race'] == 'Amer-Indian-Eskimo'
+  amer_indian_eskimo = df[mask]['race'].count() 
+  mask = df['race'] == 'Asian-Pac-Islander'
+  asian_pac_islander = df[mask]['race'].count() 
+  race_count = pd.DataFrame(data = [white, black, asian_pac_islander, amer_indian_eskimo, other], index = ['White','Black', 'Asian-Pacific-Isalnder', 'Amer-Indian-Eskimo', 'Other'])
+  lista = []
+  race_count = list(race_count[0])
+
+    # What is the average age of men?
+  mask = df['sex'] == 'Male'
+  average_age_men = round(df[mask]['age'].mean(),1)
+
+    # What is the percentage of people who have a Bachelor's degree?
+  percentage_bachelors = round(100*(df['education'].value_counts(normalize=True)['Bachelors']),1)
+    
+    # What percentage of people with advanced education (`Bachelors`, `Masters`, or `Doctorate`) make more than 50K?
+    # What percentage of people without advanced education make more than 50K?
+
+    # with and without `Bachelors`, `Masters`, or `Doctorate`
+
+
+    # percentage with salary >50K
+  higher_ed = df.loc[df["education"].isin(["Bachelors", "Masters", "Doctorate"])]
+  higher_education_rich = round(100 * higher_ed.loc[higher_ed["salary"] == ">50K"].size / higher_ed.size, 1,)
+
+  lower_ed = df.loc[~df["education"].isin(["Bachelors", "Masters", "Doctorate"])]
+  lower_education_rich = round(100 * lower_ed.loc[lower_ed["salary"] == ">50K"].size / lower_ed.size, 1,)
+
+    # What is the minimum number of hours a person works per week (hours-per-week feature)?
+  min_work_hours = (df['hours-per-week'].min())
+
+    # What percentage of the people who work the minimum number of hours per week have a salary of >50K?
+  mask = (df['hours-per-week'] == 1) & (df['salary'] == '>50K')
+  total_mask = (df['hours-per-week'] == 1)
+  rich_percentage = (100*(df[mask]['age'].count()) / (df[total_mask]['age'].count()))
+
+    # What country has the highest percentage of people that earn >50K?
+  total_country = df['native-country'].value_counts()
+  mask = df['salary'] == '>50K'
+  rich_by_country = df[mask]['native-country'].value_counts()
+  percentage = rich_by_country / total_country
+  highest_earning_country = percentage.idxmax()
+
+  mask = df['salary'] == '>50K'
+  count_country = df[mask]['native-country'].value_counts()
+  total_country = df['native-country'].value_counts()
+  mean = round(100*count_country/total_country, 1)
+  highest_earning_country_percentage = mean.max()
+
+    # Identify the most popular occupation for those who earn >50K in India.
+    
+  mask = (df['native-country'] == 'India') & (df['salary'] == '>50K')
+  popIN = (df[mask]['occupation']).value_counts()
+  top_IN_occupation = (popIN).idxmax()
